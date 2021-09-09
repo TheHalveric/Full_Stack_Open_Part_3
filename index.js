@@ -44,7 +44,7 @@ app.get('/api/persons/:id', (req, res, next) => {
 
 app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndDelete(req.params.id)
-    .then(result => {
+    .then(res => {
       res.status(204).end()
     })
     .catch(error => next(error))
@@ -54,14 +54,14 @@ app.post('/api/persons', (req, res, next) => {
   const body = req.body
 
   if (body.name === undefined) {
-    return res.status(400).json({ 
-      error: 'Name missing' 
+    return res.status(400).json({
+      error: 'Name missing'
     })
   }
 
   if (body.number === undefined) {
     return res.status(400).json({
-        error: 'Number missing'
+      error: 'Number missing'
     })
   }
 
@@ -100,13 +100,14 @@ const errorHandler = (error, req, res, next) => {
   if (error.name === 'CastError') {
     return res.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
-    return res.status(400).json({error: error.message})
+    return res.status(400).json({ error: error.message })
   }
   next(error)
 }
 
 app.use(errorHandler) //load last
 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
